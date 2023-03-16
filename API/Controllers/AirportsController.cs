@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using API.Application.Commands;
-using API.Application.ViewModels;
+using Application.Commands;
+using Application.ViewModels;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

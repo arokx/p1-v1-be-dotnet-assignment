@@ -17,6 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Application.Query\Application.Query.csproj" />
+      <ProjectReference Include="..\Application\Application.Core.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
