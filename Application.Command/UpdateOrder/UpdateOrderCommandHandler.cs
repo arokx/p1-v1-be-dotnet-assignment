@@ -23,6 +23,10 @@ namespace Application.Commands
                 throw new Exception($"You have requested ({order.Quantity}) Items. But only ({order.QuantityInStock}) quantities available in the stock.We can't proceed the order.");
             }
             order.isConfirmed = request.isConfirmed;
+            if (request.isConfirmed)
+            {
+                order.OrderConfirmedDate= DateTime.UtcNow;
+            }
             _orderRepository.Update(order);
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
             Console.WriteLine("Order has been confirmed.");
