@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.ViewModels
+{
+    public class OrderViewModel
+    {
+        public string Name { get; set; }
+        public int Quantity { get; set; }
+        public DateTimeOffset OrderDate { get; set; }
+        public bool isConfirmed { get; set; }
+    }
+}
