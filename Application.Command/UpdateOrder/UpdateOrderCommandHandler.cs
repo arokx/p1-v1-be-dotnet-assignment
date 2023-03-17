@@ -18,7 +18,7 @@ namespace Application.Commands
         public async Task<Order> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.GetAsync(request.orderId);
-            if (order.Quantity < order.QuantityInStock)
+            if (order.Quantity > order.QuantityInStock)
             {
                 throw new Exception($"You have requested ({order.Quantity}) Items. But only ({order.QuantityInStock}) quantities available in the stock.We can't proceed the order.");
             }
