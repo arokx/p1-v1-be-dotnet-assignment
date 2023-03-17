@@ -29,12 +29,6 @@ public class FlightsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
-    [Route("Search")]
-    public Task<IEnumerable<FlightResponse>> GetAvailableFlights()
-    {
-        throw new NotImplementedException();
-    }
 
     [HttpGet]
     [Route("GetAvailableFlights")]
