@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Domain.Aggregates.AirportAggregate;
 using MediatR;
 
-namespace API.Application.Commands
+namespace Application.Commands
 {
     public class CreateAirportCommandHandler : IRequestHandler<CreateAirportCommand, Airport>
     {

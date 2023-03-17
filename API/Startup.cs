@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
+using Domain.Aggregates.FlightAggregate;
 
 namespace API
 {
@@ -32,7 +33,8 @@ namespace API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMediatR(typeof(Startup));
-
+            services.AddMediatR(AppDomain.CurrentDomain.Load("Application.Query"));
+            services.AddMediatR(AppDomain.CurrentDomain.Load("Application.Command"));
             services.AddOpenApiDocument(d => d.Title = "AcmeFlights API");
 
             services.AddFlightsContext(
@@ -40,6 +42,7 @@ namespace API
                 typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             services.AddScoped<IAirportRepository, AirportRepository>();
+            services.AddScoped<IFlightRepository, FlightRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
