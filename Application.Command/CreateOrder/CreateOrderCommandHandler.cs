@@ -17,11 +17,11 @@ namespace Application.Commands
 
         public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var airport = _orderRepository.Add(new Order(request.Name,request.Quantity,request.QuantityInStock,request.OrderDate));
+            var order = _orderRepository.Add(new Order(request.Name,request.Quantity,request.OrderDate));
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
             
-            return airport;
+            return order;
         }
     }
 }

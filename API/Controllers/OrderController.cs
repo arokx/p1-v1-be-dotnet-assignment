@@ -29,9 +29,9 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Store([FromBody]CreateOrderCommand command)
         {
-            var airport = await _mediator.Send(command);
+            var order = await _mediator.Send(command);
 
-            return Ok(_mapper.Map<OrderViewModel>(airport));
+            return Created("~/api/Order", order);
         }
 
         [HttpPut]

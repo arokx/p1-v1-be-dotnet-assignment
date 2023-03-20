@@ -17,7 +17,6 @@ namespace Application.Commands
 
         public string Name { get; set; }
         public int Quantity { get; set; }
-        public int QuantityInStock { get; set; }
         public DateTimeOffset OrderDate { get; set; }
 
     }
