@@ -21,6 +21,7 @@ namespace Application.Commands
         public async Task<Order> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.GetAsync(request.orderId);
+            //get the available quantity from Quantity table
             var quantityInStock = await _quantityRepository.GetAsync();
             if (order.Quantity > quantityInStock[0].AvailableQuantity)
             {
@@ -35,9 +36,13 @@ namespace Application.Commands
                 order.isConfirmed = true;
             }
             _orderRepository.Update(order);
+
+
             var quantity = quantityInStock[0];
+            //Update the Quantity table with new available quantity
             quantity.AvailableQuantity = quantityInStock[0].AvailableQuantity - order.Quantity;
             _quantityRepository.Update(quantity);
+
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
             Console.WriteLine("Order has been confirmed.");
             return order;
