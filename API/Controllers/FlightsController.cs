@@ -31,7 +31,6 @@ public class FlightsController : ControllerBase
 
 
     [HttpGet]
-    [Route("Search")]
     public async Task<IActionResult> GetAvailableFlights(string AirPortCode)
     {
         var flights = await _mediator.Send(new GetAvailableFlightsQuery { AirPortCode = AirPortCode});
