@@ -8,14 +8,12 @@ namespace Application.Commands
 {
     public class UpdateOrderCommand : IRequest<Order>
     {
-        public UpdateOrderCommand(bool isConfirmed, Guid orderId)
+        public UpdateOrderCommand(Guid orderId)
         {
 
-            this.isConfirmed = isConfirmed;
             this.orderId = orderId;
         }
 
-        public bool isConfirmed { get; private set; }
         public Guid orderId { get; private set; }
 
     }

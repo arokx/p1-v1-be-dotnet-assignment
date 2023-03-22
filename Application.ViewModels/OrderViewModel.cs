@@ -12,6 +12,8 @@ namespace Application.ViewModels
         public string Name { get; set; }
         public int Quantity { get; set; }
         public DateTimeOffset OrderDate { get; set; }
+        public DateTimeOffset? OrderConfirmedDate { get; set; }
         public bool isConfirmed { get; set; }
+        public decimal Price { get; set; }
     }
 }
