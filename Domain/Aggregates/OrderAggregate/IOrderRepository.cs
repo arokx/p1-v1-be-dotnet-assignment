@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Domain.Aggregates.FlightAggregate;
 using Domain.SeedWork;
 
 namespace Domain.Aggregates.OrderAggregate
@@ -9,7 +10,9 @@ namespace Domain.Aggregates.OrderAggregate
         Order Add(Order order);
 
         void Update(Order order);
-
+        void UpdateFlightRate(FlightRate flightRate);
         Task<Order> GetAsync(Guid OrderId);
+
+        Task<FlightRate> GetFlightByIdAsync(Guid flightRateId);
     }
 }

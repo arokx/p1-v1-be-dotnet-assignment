@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.OrderAggregate;
-using Domain.Aggregates.QuantityAggregate;
 using MediatR;
 
 namespace Application.Commands
@@ -10,41 +9,40 @@ namespace Application.Commands
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Order>
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IQuantityRepository _quantityRepository;
 
-        public UpdateOrderCommandHandler(IOrderRepository orderRepository, IQuantityRepository quantityRepository) 
+        public UpdateOrderCommandHandler(IOrderRepository orderRepository) 
         {
             _orderRepository = orderRepository;
-            _quantityRepository = quantityRepository;
         }
 
         public async Task<Order> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             // Get the Order object to be updated from the repository.
             var order = await _orderRepository.GetAsync(request.orderId);
-            // Get the available quantity from Quantity table
-            var quantityInStock = await _quantityRepository.GetAsync();
+            // Check the OrderId is Valid.
+            if (order == null) {
+                throw new Exception("Invalid OrderId. Please get a valid OrderId from Order table.");
+            }
+            // Get the available flightRate from FlightRate table
+            var flightRate = await _orderRepository.GetFlightByIdAsync(order.FlightRateId);
             // Check if the requested quantity is greater than the available quantity.
-            if (order.Quantity > quantityInStock[0].AvailableQuantity)
+            if (order.Quantity > flightRate.Available)
             {
-                throw new Exception($"You have requested ({order.Quantity}) Items. But only ({quantityInStock[0].AvailableQuantity}) quantities available in the stock.We can't proceed the order.");
+                throw new Exception($"You have requested ({order.Quantity}). But only ({flightRate.Available}) seats available.We can't proceed the order.");
             }
             // Check if the order has already been confirmed.
             if (order.isConfirmed) {
                 throw new Exception("Order is already confirmed.");
-            }
-            // If the request indicates that the order should be confirmed, update the Order object accordingly.
-            if (request.isConfirmed)
+            }else
             {
                 order.OrderConfirmedDate= DateTime.UtcNow;
                 order.isConfirmed = true;
-            }
+                order.Price = flightRate.Price.Value * order.Quantity;           }
             _orderRepository.Update(order);
 
-            // Update the available quantity in the Quantity table in the repository.
-            var quantity = quantityInStock[0];          
-            quantity.AvailableQuantity = quantityInStock[0].AvailableQuantity - order.Quantity;
-            _quantityRepository.Update(quantity);
+            // Update the available quantity in the FlightRate table in the repository.      
+            flightRate.Available = flightRate.Available - order.Quantity;
+            _orderRepository.UpdateFlightRate(flightRate);
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
             Console.WriteLine("Order has been confirmed.");
