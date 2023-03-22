@@ -8,16 +8,14 @@ namespace Application.Commands
 {
     public class CreateOrderCommand : IRequest<Order>
     {
-        public CreateOrderCommand(string name,int quantity, DateTimeOffset orderDate)
+        public CreateOrderCommand(string name,int quantity)
         {
             Name = name;
             Quantity = quantity;
-            OrderDate = orderDate;
         }
 
         public string Name { get; set; }
         public int Quantity { get; set; }
-        public DateTimeOffset OrderDate { get; set; }
 
     }
 }

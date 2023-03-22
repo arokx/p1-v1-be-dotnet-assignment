@@ -35,7 +35,6 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [Route("ConfirmOrder")]
         public async Task<IActionResult> Confirm([FromBody] UpdateOrderCommand command)
         {
             var airport = await _mediator.Send(command);

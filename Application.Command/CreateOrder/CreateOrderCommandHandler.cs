@@ -17,8 +17,9 @@ namespace Application.Commands
 
         public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = _orderRepository.Add(new Order(request.Name,request.Quantity,request.OrderDate));
-
+            // Create a new Order object using the request data.
+            var order = _orderRepository.Add(new Order(request.Name,request.Quantity,DateTimeOffset.Now));
+            // Save the changes to the repository.
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
             
             return order;

@@ -16,10 +16,11 @@ namespace Application.Commands
 
         public async Task<Airport> Handle(CreateAirportCommand request, CancellationToken cancellationToken)
         {
+            // Create a new Airport object using the request data.
             var airport = _airportRepository.Add(new Airport(request.Code, request.Name));
-
+            // Save the changes to the repository.
             await _airportRepository.UnitOfWork.SaveEntitiesAsync();
-            
+            // Return the newly created Airport object.
             return airport;
         }
     }
